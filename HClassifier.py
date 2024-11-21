@@ -1,6 +1,6 @@
 import csv
 import numpy as np
-
+import matplotlib as plt
 ##############################################
 def LoadSigmaDeltaTransitions():
     """
@@ -415,7 +415,6 @@ def SigmaDeltaClassificationUsecase():
     C3 = 0
     numInliersC = 0
     numOutliersC = 0
-    cStart = time.time()
     for transition in C:
         verdict,dynamic_idx = monitor([converted1,converted2,converted3,converted4],np.array(transition))
         if verdict :
@@ -431,10 +430,8 @@ def SigmaDeltaClassificationUsecase():
                     C3 +=1    
         else:
             numOutliersC+=1
-    cStop = time.time()
     print("Number Inliers C: ",numInliersC)
     print("Number Outliers C: ",numOutliersC)
-    print("Classification time of C: ",round(cStop-cStart,3))
     print(f"Distribution: 0 - {C0} ; 1 - {C1} ; 2 - {C2} ; 3 - {C3}")
     
   # Assuming C_values and C_labels are defined
