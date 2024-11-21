@@ -260,6 +260,39 @@ def transformInequationSystem(Ieq,Z):
 def SigmaDeltaClassificationUsecase():
     """
     H-Classifier method applied to a Sigma Delta modulator of third order
+
+    The matricies from the inequation systems come as described in the corresponding paper from the leafs and their associated paths. Due to the fact
+    that the symbolic simulation code that is required to generate the AACDD is in the kotlin ecosystem and there is no standardized parsing, the implementaion
+    here has been done fully manual.
+
+    ITE(1, ITE(2, (,
+    x0= -0.044399999999999995 + 0.05000000000000233 e_r + -0.1 e_1 + 1.9 e_7 + 0.022199999999999998 e_10,
+    x1=-0.2881+0.10000000000000635 e_r+-0.2 e_2+ 1.9 e_7+ 2.4 e_8+ 0.14405 e_10,
+    x2=-0.7997+ 0.10000000000000779 e_r+ -0.20000000000000007 e_3+ 2.4 e_8+ 2.9 e_9+ 0.39985 e_10,
+
+    ((0.0056, −0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 1.9, 0.0, 0.0, 0.022199999999999998), -0.044)
+    ((0.10000000000000635, 0.0, -0.2, 0.0, 0.0, 0.0, 0.0, 1.9, 2.4, 0.0, 0.14405), -0.2881)
+    ((0.10000000000000779, 0.0, 0.0, -0.20000000000000007, 0.0, 0.0, 0.0, 0.0, 2.4, 2.9, 0.39985), -0.7997) 
+    
+    ITE(5, (,
+    x0=0.044399999999999995+ 0.0500000000000023 e_r+ 0.1 e_1+ 0.022199999999999998 e_10+ 1.9 e_7,
+    x1=0.2881+ 0.10000000000000622 e_r+ 2.4 e_8+ 0.2 e_2+ 0.14405 e_10+ 1.9 e_7,
+    x2=0.7997+0.10000000000000758 e_r+2.4 e_8+2.9 e_9+0.39985 e_10+0.20000000000000007 e_3+0.0 e_6,
+    d=True),
+
+    ((0.0500000000000023, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 1.9, 0.0, 0.0, 0.022199999999999998), 0.044399999999999995)
+    ((0.10000000000000622, 0.0, 0.2, 0.0, 0.0, 0.0, 0.0, 1.9, 2.4, 0.0, 0.14405), 0.2881)
+    ((0.10000000000000758, 0.0, 0.0, 0.20000000000000007, 0.0, 0.0, 0.0, 0.0, 2.4, 2.9, 0.39985), 0.7997)
+
+    Cond 5:
+    0.7997 + 0.10000000000001001e_r + 2.4e_8 + 2.9e_9 + 0.89985e_10 + 0.20000000000000007e_3
+
+    ((0.10000000000001001, 0.0, 0.0, 0.20000000000000007, 0.0, 0.0, 0.0, 0.0, 2.4, 2.9, 0.89985),0.7997)
+
+    Cond 2
+    -0.7997 + 0.10000000000001022e_r + 2.4e_8 + 2.9e_9 + 0.89985e_10 + -0.20000000000000007e_3
+    ((0.10000000000001022, 0.0, 0.0, -0.20000000000000007, 0.0, 0.0, 0.0, 0.0, 2.4, 2.9, 0.89985), -0.7997)
+
     """
     delta = 0.5
 
@@ -433,33 +466,7 @@ def SigmaDeltaClassificationUsecase():
     print("Number Inliers C: ",numInliersC)
     print("Number Outliers C: ",numOutliersC)
     print(f"Distribution: 0 - {C0} ; 1 - {C1} ; 2 - {C2} ; 3 - {C3}")
-    
-  # Assuming C_values and C_labels are defined
-    C_labels = ['C0','C1','C2','C3']
-    C_values = [C0, C1, C2, C3]
 
-    fig, ax = plt.subplots()
-
-    # Create bar plot with distinct colors
-    bars = ax.bar(C_labels, C_values, color=['skyblue', 'lightgreen', 'salmon', 'orange'])
-
-    # Add text labels above each bar
-    for bar in bars:
-        yval = bar.get_height()
-        # Avoid placing text on bars with value 0
-        if yval > 0:
-            ax.text(bar.get_x() + bar.get_width()/2, yval, int(yval), ha='center', va='bottom')
-
-    # Set y-axis to logarithmic scale
-    ax.set_yscale('log')
-
-    # Set y-axis limits with a small lower bound to avoid display issues with zero counts
-    ax.set_ylim(0.1, max(C_values) * 1.5)
-
-    ax.set_ylabel("Count (log scale)")
-    ax.set_title("Distribution of Transitions in C (Logarithmic Scale)")
-
-    plt.show()
 
     SPE0 = 0
     SPE1 = 0
@@ -536,3 +543,6 @@ def SigmaDeltaClassificationUsecase():
     print("Number Inliers N: ",numInliersN)
     print("Number Outliers N: ",numOutliersN)
     print(f"Distribution: 0 - {N0} ; 1 - {N1} ; 2 - {N2} ; 3 - {N3}")
+
+
+SigmaDeltaClassificationUsecase()
